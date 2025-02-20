@@ -7,5 +7,16 @@ export class toDoItem {
     }
 }
 
-export const toDoOne = new toDoItem("test note", "this is a test note", "9/7/24","low");
+export function createToDoItem(title, description,dueDate, priority) {
+    return new toDoItem(title, description, dueDate, priority);
+}
+
+export function updateToDoItem(item, updates) {
+    if (updates.title !== undefined) item.title = updates.title;
+    if (updates.description !== undefined) item.description = updates.description;
+    if (updates.dueDate !== undefined) item.dueDate = updates.dueDate;
+    if (updates.priority !== undefined) item.priority = updates.priority;
+    return item;
+  }
+  
 
