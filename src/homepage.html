@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+</head>
+<body>
+    <header>
+        <div class="appTitle">Mark's ToDo List App</div>
+        <a href="https://github.com/mark-vecchione/Odin_To-Do-List">Source Code</a>     
+    </header>
+    <div class="right-side">
+        <div class="task-title-container">
+            <div class="task-section-title">Tasks</div>
+            <button class="addTaskButton">Add Task</button>
+        </div>
+        <div class="tasks-list"> </div>
+    </div>
+    <div class="left-side">
+        <div class="project-title-container">
+            <div class="project-section-title">Projects</div>
+            <button class="addProjectButton">Add Project</button>
+        </div>
+        <div class="projects-list"></div>
+    </div>
+    <div class="modal-wrapper">
+        <div id="taskFormWrapper" class="modal">
+            <div class="taskContent">
+                <form id="taskForm" autocomplete="off">
+                    <div class="inputField">
+                        <label class="input-label">Task Name:</label>
+                        <input 
+                            type="text"
+                            name="title"
+                            class="formClass"
+                            id="form1"
+                            required
+                        />
+                    </div>
+                    <div class="inputField">
+                        <label class="input-label">Task Description:</label>
+                        <input 
+                            type="text"
+                            name="description"
+                            class="formClass"
+                            id="form2"
+                            required
+                        />
+                    </div>
+                    <div class="inputField">
+                        <label class="input-label">Due Date</label>
+                        <input 
+                            type="date"
+                            name="dueDate"
+                            class="formClass"
+                            id="form2"
+                            required
+                        />
+                    </div>
+                    <div class="inputField">
+                        <label class="input-label">Priority:</label>
+                        <select id="priorities" name="priorities">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <div class="flex">
+                        <button type="submit" class="submitForm">
+                            Add Task
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-wrapper">
+        <div id="projectFormWrapper" class="modal">
+            <div class="projectContent">
+                <form id="projectForm" autocomplete="off">
+                    <div class="inputField">
+                        <label class="input-label">Project Name:</label>
+                        <input 
+                            type="text"
+                            name="title"
+                            class="formClass"
+                            id="form1"
+                            required
+                        />
+                    </div>
+                    <div class="inputField">
+                        <label class="input-label">Project Description:</label>
+                        <input 
+                            type="text"
+                            name="description"
+                            class="formClass"
+                            id="form2"
+                            required
+                        />
+                    </div>
+                    <div class="inputField">
+                        <label class="input-label">Project Priority:</label>
+                        <select id="priorities" name="priorities">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <div class="flex">
+                        <button type="submit" class="submitForm">
+                            Add Project
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
