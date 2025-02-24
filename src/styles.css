@@ -1,0 +1,75 @@
+/* resets */
+* {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+/* Header styling */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 20px;
+    background-color: #f8f8f8;
+  }
+  
+  header .left,
+  header .right {
+    width: 20%; 
+  }
+  
+  header .appTitle {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  
+  header .right a {
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #333;
+    display: block;
+    text-align: right;
+  }
+  
+ /* Container for the left and right sections */
+.main-container {
+    display: flex;
+    justify-content: space-between;  /* Pushes children to the edges */
+    align-items: flex-start;           /* Aligns children to the top */
+    padding: 20px;                   /* Optional padding */
+  }
+  
+  /* Left-side styling */
+  .left-side {
+    flex: 1;
+    margin-right: 10px;  /* Optional spacing */
+  }
+  
+  /* Right-side styling */
+  .right-side {
+    flex: 1;
+    margin-left: 10px;   /* Optional spacing */
+  }
+
+  /*task and project containers*/
+  .task-title-container, 
+  .project-title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* display (flex) or hide (none) forms */
+  #taskFormWrapper {
+    display: none;
+  }
+
+  #projectFormWrapper {
+    display: none;
+  }

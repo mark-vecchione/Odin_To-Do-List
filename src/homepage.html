@@ -7,22 +7,29 @@
 </head>
 <body>
     <header>
+        <div class="left"></div>
         <div class="appTitle">Mark's ToDo List App</div>
-        <a href="https://github.com/mark-vecchione/Odin_To-Do-List">Source Code</a>     
+        <div class="right">
+            <a href="https://github.com/mark-vecchione/Odin_To-Do-List">Source Code</a>
+        </div>   
     </header>
-    <div class="right-side">
-        <div class="task-title-container">
-            <div class="task-section-title">Tasks</div>
-            <button class="addTaskButton">Add Task</button>
+    <div class="main-container">
+        <div class="right-side">
+            <div class="task-title-container">
+                <div class="task-section-title">Tasks</div>
+                <button class="addTaskButton">Add Task</button>
+            </div>
+            <ul class="tasks-list"> 
+            </ul>
         </div>
-        <div class="tasks-list"> </div>
-    </div>
-    <div class="left-side">
-        <div class="project-title-container">
-            <div class="project-section-title">Projects</div>
-            <button class="addProjectButton">Add Project</button>
+        <div class="left-side">
+            <div class="project-title-container">
+                <div class="project-section-title">Projects</div>
+                <button class="addProjectButton">Add Project</button>
+            </div>
+            <ul class="projects-list">
+            </ul>
         </div>
-        <div class="projects-list"></div>
     </div>
     <div class="modal-wrapper">
         <div id="taskFormWrapper" class="modal">
