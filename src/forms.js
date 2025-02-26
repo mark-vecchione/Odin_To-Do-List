@@ -1,6 +1,13 @@
+import {toDoItem, createToDoItem, updateToDoItem} from './toDoItem';
+import {projectItem, createProjectItem, updateProjectItem} from './projectItem';
+
 // global const to grab task and project form wrappers//
 const taskFormWrapper = document.getElementById('taskFormWrapper');
 const projectFormWrapper = document.getElementById('projectFormWrapper');
+
+// create to do and project arrays//
+const toDos = [];
+const projects = [];
 
 // display task form and project form//
 export function showTaskForm() {
@@ -66,16 +73,14 @@ export function submitTaskForm() {
         //prevent refresh//
         event.preventDefault();
 
-        // create form data object //
-        const taskFormData = new FormData(taskForm);
-        const taskData = Object.fromEntries(taskFormData);
+        //create to do item//
+        toDos.push(createToDoItem(Object.fromEntries(new FormData(taskForm))));
 
         //hide form//
         hideTaskForm();
 
-        //log data to test//
-
-        console.log(taskData);
+        //log to test//
+        console.log(toDos);
     });
 }
 
@@ -86,14 +91,13 @@ export function submitProjectForm() {
         //prevent refresh//
         event.preventDefault();
 
-        // create form data object //
-        const projectFormData = new FormData(projectForm);
-        const projectData = Object.fromEntries(projectFormData);
+        projects.push(createProjectItem(Object.fromEntries(new FormData(projectForm))));
+
         //hide form//
-        hideTaskForm();
+        hideProjectForm();
 
         //log data to test//
-        console.log(projectData);
+        console.log(projects);
     });
 }
 

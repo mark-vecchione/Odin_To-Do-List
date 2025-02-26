@@ -7,7 +7,7 @@ export class toDoItem {
     }
 }
 
-export function createToDoItem(title, description,dueDate, priority) {
+export function createToDoItem({title, description,dueDate, priority}) {
     return new toDoItem(title, description, dueDate, priority);
 }
 
