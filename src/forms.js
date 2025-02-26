@@ -80,7 +80,7 @@ export function submitTaskForm() {
         hideTaskForm();
 
         //log to test//
-        console.log(toDos);
+        renderToDos();
     });
 }
 
@@ -97,8 +97,56 @@ export function submitProjectForm() {
         hideProjectForm();
 
         //log data to test//
-        console.log(projects);
+        renderProjects();
     });
 }
 
 
+//render To Dos//
+export function renderToDos() {
+    const tasksList = document.querySelector(".tasks-list");
+  
+    // Clear out existing HTML
+    tasksList.innerHTML = '';
+  
+    // Iterate over the toDos array
+    toDos.forEach((item) => {
+      const toDoElement = document.createElement('li');
+      toDoElement.classList.add('to-do-item');
+  
+      toDoElement.innerHTML = `
+        <h3>${item.title}</h3>
+        <p>${item.description}</p>
+        <p>Due: ${item.dueDate}</p>
+        <p>Priority: ${item.priority}</p>
+      `;
+  
+      // Append new element to list container
+      tasksList.appendChild(toDoElement);
+    });
+  };
+  
+//render Projects//
+  export function renderProjects() {
+    const projectsList = document.querySelector('.projects-list');
+  
+    // Clear out existing HTML
+    projectsList.innerHTML = '';
+  
+    // Iterate over the toDos array
+    projects.forEach((item) => {
+      const projectElement = document.createElement('li');
+      projectElement.classList.add('project-item');
+  
+      projectElement.innerHTML = `
+        <h3>${item.title}</h3>
+        <p>${item.description}</p>
+        <p>Priority: ${item.priority}</p>
+      `;
+  
+      // Append new element to list container
+      projectsList.appendChild(projectElement);
+    });
+  }
+
+  
