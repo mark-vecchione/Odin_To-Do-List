@@ -110,15 +110,22 @@ export function renderToDos() {
     tasksList.innerHTML = '';
   
     // Iterate over the toDos array
-    toDos.forEach((item) => {
+    toDos.forEach((item, index) => {
       const toDoElement = document.createElement('li');
       toDoElement.classList.add('to-do-item');
   
       toDoElement.innerHTML = `
-        <h3>${item.title}</h3>
-        <p>${item.description}</p>
-        <p>Due: ${item.dueDate}</p>
-        <p>Priority: ${item.priority}</p>
+        <div class= 'deleteButtonWrapper'>
+            <button class='deleteButton' data-type='task' data-index="${index}">
+            Delete Task
+            </button>
+        </div>
+        <div class = 'toDoArray'>
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+            <p>Due: ${item.dueDate}</p>
+            <p>Priority: ${item.priority}</p>
+        </div>
       `;
   
       // Append new element to list container
@@ -127,21 +134,28 @@ export function renderToDos() {
   };
   
 //render Projects//
-  export function renderProjects() {
+export function renderProjects() {
     const projectsList = document.querySelector('.projects-list');
   
     // Clear out existing HTML
     projectsList.innerHTML = '';
   
     // Iterate over the toDos array
-    projects.forEach((item) => {
+    projects.forEach((item, index) => {
       const projectElement = document.createElement('li');
       projectElement.classList.add('project-item');
   
       projectElement.innerHTML = `
-        <h3>${item.title}</h3>
-        <p>${item.description}</p>
-        <p>Priority: ${item.priority}</p>
+        <div class = 'deleteButtonWrapper'>
+            <button class='deleteButton' data-type='project' data-index = "${index}">
+            Delete
+            </button>
+        </div>
+        <div class = 'projectArray'>
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+            <p>Priority: ${item.priority}</p>
+        </div<
       `;
   
       // Append new element to list container
@@ -149,4 +163,19 @@ export function renderToDos() {
     });
   }
 
+  // attach event listeners to delete buttons//
+export function deleteButtons() {
+    document.addEventListener('click', (event) => {
+        const index = event.target.getAttribute('data-index');
+        const type = event.target.getAttribute('data-type');
+
+        if (type === 'task') {
+            toDos.splice(index,1);
+            renderToDos();
+        } else if (type === 'project') {
+            projects.splice(index,1);
+            renderProjects();
+        }
+    });
+};
   

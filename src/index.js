@@ -1,6 +1,6 @@
 import "./styles.css";
 import { add } from 'date-fns';
-import {openTaskForm, openProjectForm, hideTaskForm, hideProjectForm, submitTaskForm, submitProjectForm, renderToDos,renderProjects} from './forms'
+import {openTaskForm, openProjectForm, hideTaskForm, hideProjectForm, submitTaskForm, submitProjectForm, renderToDos,renderProjects, deleteButtons} from './forms'
 
 openTaskForm();
 
@@ -13,3 +13,5 @@ submitProjectForm();
 renderToDos();
 
 renderProjects();
+
+deleteButtons();
