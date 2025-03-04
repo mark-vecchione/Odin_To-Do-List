@@ -1,17 +1,18 @@
 import "./styles.css";
 import { add } from 'date-fns';
-import {openTaskForm, openProjectForm, hideTaskForm, hideProjectForm, submitTaskForm, submitProjectForm, renderToDos,renderProjects, deleteButtons} from './forms'
+import {openTaskForm, openProjectForm, hideTaskForm, hideProjectForm, submitTaskForm, submitProjectForm} from './forms';
+import { renderTasksTable, renderProjectsTable } from './tableRenderer';
 
+// Initialize task form functionality
 openTaskForm();
-
-openProjectForm();
-
 submitTaskForm();
 
+// Initialize project form functionality
+openProjectForm();
 submitProjectForm();
 
-renderToDos();
-
-renderProjects();
-
-deleteButtons();
+// Initialize tables for existing data
+document.addEventListener('DOMContentLoaded', () => {
+    renderTasksTable();
+    renderProjectsTable();
+});

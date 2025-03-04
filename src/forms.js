@@ -1,13 +1,14 @@
 import {toDoItem, createToDoItem, updateToDoItem} from './toDoItem';
 import {projectItem, createProjectItem, updateProjectItem} from './projectItem';
+import { renderTasksTable, renderProjectsTable } from './tableRenderer';
 
 // global const to grab task and project form wrappers//
 const taskFormWrapper = document.getElementById('taskFormWrapper');
 const projectFormWrapper = document.getElementById('projectFormWrapper');
 
 // create to do and project arrays//
-const toDos = [];
-const projects = [];
+export const toDos = [];
+export const projects = [];
 
 // display task form and project form//
 export function showTaskForm() {
@@ -29,7 +30,6 @@ export function hideProjectForm() {
 
 
 // add event listener to new task button, display task form//
-
 export function openTaskForm() {
     document.addEventListener('DOMContentLoaded', () => {
         const addTaskButton = document.querySelector('.addTaskButton');
@@ -38,13 +38,31 @@ export function openTaskForm() {
                 //prevent refresh//
                 event.preventDefault();
     
+                // Reset form to ensure it's in "add" mode
+                const taskForm = document.querySelector('#taskForm');
+                taskForm.reset();
+                
+                // Reset any edit-specific UI elements
+                const submitBtn = taskForm.querySelector('.submitForm');
+                if (submitBtn) {
+                    submitBtn.textContent = 'Add Task';
+                }
+                
+                // Remove any edit index
+                delete taskForm.dataset.editIndex;
+                
+                // Remove any cancel button that might exist
+                const cancelBtn = taskForm.querySelector('.cancelEdit');
+                if (cancelBtn) {
+                    cancelBtn.remove();
+                }
+                
                 // display task form//
                 showTaskForm();
-            })
+            });
         }
-    })
-};
-
+    });
+}
 
 // add event listener to new project button, display project form//
 export function openProjectForm() {
@@ -54,128 +72,131 @@ export function openProjectForm() {
             addProjectButton.addEventListener('click', (event) => {
                 //prevent refresh//
                 event.preventDefault();
+                
+                // Reset form to ensure it's in "add" mode
+                const projectForm = document.querySelector('#projectForm');
+                projectForm.reset();
+                
+                // Reset any edit-specific UI elements
+                const submitBtn = projectForm.querySelector('.submitForm');
+                if (submitBtn) {
+                    submitBtn.textContent = 'Add Project';
+                }
+                
+                // Remove any edit index
+                delete projectForm.dataset.editIndex;
+                
+                // Remove any cancel button that might exist
+                const cancelBtn = projectForm.querySelector('.cancelEdit');
+                if (cancelBtn) {
+                    cancelBtn.remove();
+                }
 
-                // display task form//
+                // display project form//
                 showProjectForm();
-            })
+            });
         }
-    })
+    });
 }
 
-//attach event listener to task and project form//
-const taskForm = document.querySelector('#taskForm');
-const projectForm = document.querySelector('#projectForm');
-
 // task form submission //
-
 export function submitTaskForm() {
-    taskForm.addEventListener('submit', (event) => {
-        //prevent refresh//
-        event.preventDefault();
-
-        //create to do item//
-        toDos.push(createToDoItem(Object.fromEntries(new FormData(taskForm))));
-
-        //hide form//
-        hideTaskForm();
-
-        //log to test//
-        renderToDos();
+    document.addEventListener('DOMContentLoaded', () => {
+        const taskForm = document.querySelector('#taskForm');
+        
+        if (taskForm) {
+            taskForm.addEventListener('submit', (event) => {
+                //prevent refresh//
+                event.preventDefault();
+                
+                // Get form data
+                const formData = Object.fromEntries(new FormData(taskForm));
+                
+                // Check if we're editing or creating
+                if (taskForm.dataset.editIndex !== undefined) {
+                    // We're editing an existing task
+                    const index = parseInt(taskForm.dataset.editIndex);
+                    
+                    // Update the task
+                    updateToDoItem(toDos[index], formData);
+                    
+                    // Remove the edit index
+                    delete taskForm.dataset.editIndex;
+                    
+                    // Reset button text
+                    const submitBtn = taskForm.querySelector('.submitForm');
+                    if (submitBtn) {
+                        submitBtn.textContent = 'Add Task';
+                    }
+                    
+                    // Remove any cancel button
+                    const cancelBtn = taskForm.querySelector('.cancelEdit');
+                    if (cancelBtn) {
+                        cancelBtn.remove();
+                    }
+                } else {
+                    // We're creating a new task
+                    toDos.push(createToDoItem(formData));
+                }
+                
+                // Reset and hide the form
+                taskForm.reset();
+                hideTaskForm();
+                
+                // Render the updated tasks table
+                renderTasksTable();
+            });
+        }
     });
 }
 
 //project form submission//
-
 export function submitProjectForm() {
-    projectForm.addEventListener('submit', (event) => {
-        //prevent refresh//
-        event.preventDefault();
-
-        projects.push(createProjectItem(Object.fromEntries(new FormData(projectForm))));
-
-        //hide form//
-        hideProjectForm();
-
-        //log data to test//
-        renderProjects();
-    });
-}
-
-
-//render To Dos//
-export function renderToDos() {
-    const tasksList = document.querySelector(".tasks-list");
-  
-    // Clear out existing HTML
-    tasksList.innerHTML = '';
-  
-    // Iterate over the toDos array
-    toDos.forEach((item, index) => {
-      const toDoElement = document.createElement('li');
-      toDoElement.classList.add('to-do-item');
-  
-      toDoElement.innerHTML = `
-        <div class= 'deleteButtonWrapper'>
-            <button class='deleteButton' data-type='task' data-index="${index}">
-            Delete Task
-            </button>
-        </div>
-        <div class = 'toDoArray'>
-            <h3>${item.title}</h3>
-            <p>${item.description}</p>
-            <p>Due: ${item.dueDate}</p>
-            <p>Priority: ${item.priority}</p>
-        </div>
-      `;
-  
-      // Append new element to list container
-      tasksList.appendChild(toDoElement);
-    });
-  };
-  
-//render Projects//
-export function renderProjects() {
-    const projectsList = document.querySelector('.projects-list');
-  
-    // Clear out existing HTML
-    projectsList.innerHTML = '';
-  
-    // Iterate over the toDos array
-    projects.forEach((item, index) => {
-      const projectElement = document.createElement('li');
-      projectElement.classList.add('project-item');
-  
-      projectElement.innerHTML = `
-        <div class = 'deleteButtonWrapper'>
-            <button class='deleteButton' data-type='project' data-index = "${index}">
-            Delete
-            </button>
-        </div>
-        <div class = 'projectArray'>
-            <h3>${item.title}</h3>
-            <p>${item.description}</p>
-            <p>Priority: ${item.priority}</p>
-        </div<
-      `;
-  
-      // Append new element to list container
-      projectsList.appendChild(projectElement);
-    });
-  }
-
-  // attach event listeners to delete buttons//
-export function deleteButtons() {
-    document.addEventListener('click', (event) => {
-        const index = event.target.getAttribute('data-index');
-        const type = event.target.getAttribute('data-type');
-
-        if (type === 'task') {
-            toDos.splice(index,1);
-            renderToDos();
-        } else if (type === 'project') {
-            projects.splice(index,1);
-            renderProjects();
+    document.addEventListener('DOMContentLoaded', () => {
+        const projectForm = document.querySelector('#projectForm');
+        
+        if (projectForm) {
+            projectForm.addEventListener('submit', (event) => {
+                //prevent refresh//
+                event.preventDefault();
+                
+                // Get form data
+                const formData = Object.fromEntries(new FormData(projectForm));
+                
+                // Check if we're editing or creating
+                if (projectForm.dataset.editIndex !== undefined) {
+                    // We're editing an existing project
+                    const index = parseInt(projectForm.dataset.editIndex);
+                    
+                    // Update the project
+                    updateProjectItem(projects[index], formData);
+                    
+                    // Remove the edit index
+                    delete projectForm.dataset.editIndex;
+                    
+                    // Reset button text
+                    const submitBtn = projectForm.querySelector('.submitForm');
+                    if (submitBtn) {
+                        submitBtn.textContent = 'Add Project';
+                    }
+                    
+                    // Remove any cancel button
+                    const cancelBtn = projectForm.querySelector('.cancelEdit');
+                    if (cancelBtn) {
+                        cancelBtn.remove();
+                    }
+                } else {
+                    // We're creating a new project
+                    projects.push(createProjectItem(formData));
+                }
+                
+                // Reset and hide the form
+                projectForm.reset();
+                hideProjectForm();
+                
+                // Render the updated projects table
+                renderProjectsTable();
+            });
         }
     });
-};
-  
+}
