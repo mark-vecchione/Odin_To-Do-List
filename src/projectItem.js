@@ -1,8 +1,9 @@
 export class projectItem {
     constructor(title, description, priority) {
-        this.title = title
-        this.description = description
-        this.priority = priority
+        this.id = `project-${Date.now()}-${Math.floor(Math.random() * 1000)}`; // Generate a unique ID
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
     }
 }
 
@@ -15,5 +16,4 @@ export function updateProjectItem(item, updates) {
     if (updates.description !== undefined) item.description = updates.description;
     if (updates.priority !== undefined) item.priority = updates.priority;
     return item;
-  }
-  
+}

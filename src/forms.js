@@ -1,6 +1,7 @@
 import {toDoItem, createToDoItem, updateToDoItem} from './toDoItem';
 import {projectItem, createProjectItem, updateProjectItem} from './projectItem';
-import { renderTasksTable, renderProjectsTable } from './tableRenderer';
+import { renderTasksTable, renderProjectsTable, populateProjectDropdown } from './tableRenderer';
+import { ensureProjectIds } from './projectManagement';
 
 // global const to grab task and project form wrappers//
 const taskFormWrapper = document.getElementById('taskFormWrapper');
@@ -13,11 +14,14 @@ export const projects = [];
 // display task form and project form//
 export function showTaskForm() {
   taskFormWrapper.style.display = 'flex';
+  
+  // Ensure the project dropdown is populated with current projects
+  populateProjectDropdown();
 }
 
 export function showProjectForm() {
     projectFormWrapper.style.display = 'flex';
-  }
+}
 
 // hide task form and project form
 export function hideTaskForm() {
@@ -57,6 +61,9 @@ export function openTaskForm() {
                     cancelBtn.remove();
                 }
                 
+                // Populate project dropdown
+                populateProjectDropdown();
+                
                 // display task form//
                 showTaskForm();
             });
@@ -83,8 +90,8 @@ export function openProjectForm() {
                     submitBtn.textContent = 'Add Project';
                 }
                 
-                // Remove any edit index
-                delete projectForm.dataset.editIndex;
+                // Remove any project ID
+                delete projectForm.dataset.projectId;
                 
                 // Remove any cancel button that might exist
                 const cancelBtn = projectForm.querySelector('.cancelEdit');
@@ -111,6 +118,11 @@ export function submitTaskForm() {
                 
                 // Get form data
                 const formData = Object.fromEntries(new FormData(taskForm));
+                
+                // Ensure a project is selected (default to 'default' if not)
+                if (!formData.projectId) {
+                    formData.projectId = 'default';
+                }
                 
                 // Check if we're editing or creating
                 if (taskForm.dataset.editIndex !== undefined) {
@@ -145,6 +157,9 @@ export function submitTaskForm() {
                 
                 // Render the updated tasks table
                 renderTasksTable();
+                
+                // Also update the projects table as task counts may have changed
+                renderProjectsTable();
             });
         }
     });
@@ -164,15 +179,23 @@ export function submitProjectForm() {
                 const formData = Object.fromEntries(new FormData(projectForm));
                 
                 // Check if we're editing or creating
-                if (projectForm.dataset.editIndex !== undefined) {
+                if (projectForm.dataset.projectId !== undefined) {
                     // We're editing an existing project
-                    const index = parseInt(projectForm.dataset.editIndex);
+                    const projectId = projectForm.dataset.projectId;
                     
-                    // Update the project
-                    updateProjectItem(projects[index], formData);
+                    // Find the project in the array
+                    const projectIndex = projects.findIndex(p => p.id === projectId);
                     
-                    // Remove the edit index
-                    delete projectForm.dataset.editIndex;
+                    if (projectIndex !== -1) {
+                        // Update the project
+                        updateProjectItem(projects[projectIndex], formData);
+                        
+                        // Ensure we don't lose the ID
+                        projects[projectIndex].id = projectId;
+                    }
+                    
+                    // Remove the project ID
+                    delete projectForm.dataset.projectId;
                     
                     // Reset button text
                     const submitBtn = projectForm.querySelector('.submitForm');
@@ -188,6 +211,9 @@ export function submitProjectForm() {
                 } else {
                     // We're creating a new project
                     projects.push(createProjectItem(formData));
+                    
+                    // Ensure it has a unique ID
+                    ensureProjectIds();
                 }
                 
                 // Reset and hide the form
@@ -196,6 +222,9 @@ export function submitProjectForm() {
                 
                 // Render the updated projects table
                 renderProjectsTable();
+                
+                // Also update task form's project dropdown in case it's open
+                populateProjectDropdown();
             });
         }
     });
